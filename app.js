@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const top10Controller = require('./controllers/top10Controller');
 
 const app = express();
@@ -7,7 +8,7 @@ app.use(express.json());
 
 app.use('/top', top10Controller);
 
-const port= 3000;
+const port= process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
