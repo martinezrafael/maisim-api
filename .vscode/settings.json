@@ -1,4 +1,0 @@
-{
-  "appService.defaultWebAppToDeploy": "/subscriptions/aebba5b9-94d3-4a53-99ad-05d62bb441f2/resourceGroups/RM_Farma/providers/Microsoft.Web/sites/apiudf",
-  "appService.deploySubpath": "."
-}
