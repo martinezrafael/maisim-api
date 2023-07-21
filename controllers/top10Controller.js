@@ -128,31 +128,28 @@ router.post("/comparar-dados", async (req, res) => {
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const dataFromSheet = xlsx.utils.sheet_to_json(sheet);
 
-    // Obtém os dados da tabela anterior (assumindo que você já tem uma rota para isso)
+    // Obtém os dados da tabela Top10
     const dataFromTable = await Top10Model.findAll({
-      attributes: ["PRODUTO", "LABORATORIO", "UNIDADES"],
+      attributes: ["PRODUTO", "LABORATORIO"],
     });
 
-    // Lista para armazenar os itens encontrados na tabela
-    const itensEncontrados = [];
-
-    // Função para comparar os itens da planilha com os itens da tabela
-    dataFromSheet.forEach((itemSheet) => {
-      const { Nome, Laboratório, Quantidade } = itemSheet;
-      const itemEncontrado = dataFromTable.find((itemTable) => {
+    // Lista para armazenar os produtos encontrados na tabela
+    const produtosEncontrados = dataFromSheet.map((itemSheet) => {
+      const produtoEncontrado = dataFromTable.find((itemTable) => {
         return (
-          itemTable.PRODUTO === Nome &&
-          itemTable.LABORATORIO === Laboratório &&
-          itemTable.UNIDADES === Quantidade
+          itemTable.PRODUTO === itemSheet.Nome &&
+          itemTable.LABORATORIO === itemSheet.Laboratório
         );
       });
 
-      if (itemEncontrado) {
-        itensEncontrados.push(itemEncontrado);
-      }
+      return {
+        nome: itemSheet.Nome,
+        laboratorio: itemSheet.Laboratório,
+        encontrado: produtoEncontrado ? "Sim" : "Não",
+      };
     });
 
-    res.status(200).json({ itensEncontrados });
+    res.status(200).json({ produtosEncontrados });
   } catch (error) {
     console.error("Erro ao comparar os dados:", error);
     res.status(500).json({ message: "Erro ao comparar os dados" });
