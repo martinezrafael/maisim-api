@@ -116,44 +116,4 @@ router.get("/cep/:user_cep", async (req, res) => {
   }
 });
 
-router.post("/comparar-dados", async (req, res) => {
-  try {
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: "Nenhum arquivo enviado." });
-    }
-
-    // Extrair o arquivo enviado pelo frontend
-    const uploadedFile = req.files.file;
-    const workbook = xlsx.read(uploadedFile.data);
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const dataFromSheet = xlsx.utils.sheet_to_json(sheet);
-
-    // Obtém os dados da tabela Top10
-    const dataFromTable = await Top10Model.findAll({
-      attributes: ["PRODUTO", "LABORATORIO"],
-    });
-
-    // Lista para armazenar os produtos encontrados na tabela
-    const produtosEncontrados = dataFromSheet.map((itemSheet) => {
-      const produtoEncontrado = dataFromTable.find((itemTable) => {
-        return (
-          itemTable.PRODUTO === itemSheet.Nome &&
-          itemTable.LABORATORIO === itemSheet.Laboratório
-        );
-      });
-
-      return {
-        nome: itemSheet.Nome,
-        laboratorio: itemSheet.Laboratório,
-        encontrado: produtoEncontrado ? "Sim" : "Não",
-      };
-    });
-
-    res.status(200).json({ produtosEncontrados });
-  } catch (error) {
-    console.error("Erro ao comparar os dados:", error);
-    res.status(500).json({ message: "Erro ao comparar os dados" });
-  }
-});
-
 module.exports = router;
