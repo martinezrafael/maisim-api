@@ -55,4 +55,4 @@ Geral.init(
   }
 );
 
-module.exports = Top10;
+module.exports = Geral;
