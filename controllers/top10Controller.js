@@ -1,8 +1,8 @@
 const express = require("express");
 const Top10Model = require("../models/Top10Model");
 const { Op } = require("sequelize");
-
 const router = express();
+const xlsx = require("xlsx");
 
 //Busca todos os registros
 router.get("/", async (req, res) => {
@@ -113,6 +113,49 @@ router.get("/cep/:user_cep", async (req, res) => {
     res.status(200).json(topBrick);
   } catch (error) {
     res.status(500).json({ message: `Erro de servidor ${error}` });
+  }
+});
+
+router.post("/comparar-dados", async (req, res) => {
+  try {
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).json({ message: "Nenhum arquivo enviado." });
+    }
+
+    // Extrair o arquivo enviado pelo frontend
+    const uploadedFile = req.files.file;
+    const workbook = xlsx.read(uploadedFile.data);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const dataFromSheet = xlsx.utils.sheet_to_json(sheet);
+
+    // Obtém os dados da tabela anterior (assumindo que você já tem uma rota para isso)
+    const dataFromTable = await Top10Model.findAll({
+      attributes: ["PRODUTO", "LABORATORIO", "UNIDADES"],
+    });
+
+    // Lista para armazenar os itens encontrados na tabela
+    const itensEncontrados = [];
+
+    // Função para comparar os itens da planilha com os itens da tabela
+    dataFromSheet.forEach((itemSheet) => {
+      const { Nome, Laboratório, Quantidade } = itemSheet;
+      const itemEncontrado = dataFromTable.find((itemTable) => {
+        return (
+          itemTable.PRODUTO === Nome &&
+          itemTable.LABORATORIO === Laboratório &&
+          itemTable.UNIDADES === Quantidade
+        );
+      });
+
+      if (itemEncontrado) {
+        itensEncontrados.push(itemEncontrado);
+      }
+    });
+
+    res.status(200).json({ itensEncontrados });
+  } catch (error) {
+    console.error("Erro ao comparar os dados:", error);
+    res.status(500).json({ message: "Erro ao comparar os dados" });
   }
 });
 
