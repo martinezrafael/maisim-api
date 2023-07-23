@@ -3,7 +3,10 @@ const GeralModel = require("../models/GeralModel");
 const { Op } = require("sequelize");
 const router = express();
 
-//Busca todos os registros
+// Defina o tamanho padrão da página (quantidade de registros por página)
+const defaultPageSize = 10;
+
+// Busca todos os registros
 router.get("/", async (req, res) => {
   try {
     const topGeral = await GeralModel.findAll({
@@ -20,12 +23,7 @@ router.get("/", async (req, res) => {
 router.get("/cep/:user_cep", async (req, res) => {
   try {
     const { user_cep } = req.params;
-
-    console.log(user_cep);
-
     const cepAsInteger = parseInt(user_cep, 10);
-    console.log("chega aqui");
-    console.log(cepAsInteger);
 
     if (isNaN(cepAsInteger)) {
       return res.status(400).json({
@@ -34,16 +32,34 @@ router.get("/cep/:user_cep", async (req, res) => {
     }
 
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 10; // Defina o tamanho padrão da página (quantidade de registros por página)
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    // Verifica se a página atual não excede o número total de páginas
+    const totalRows = await GeralModel.count({
+      where: {
+        CEP_INICIAL: {
+          [Op.gte]: cepAsInteger,
+        },
+        CEP_FINAL: {
+          [Op.lte]: cepAsInteger,
+        },
+      },
+    });
+
+    const totalPages = Math.ceil(totalRows / pageSize);
+    if (page > totalPages) {
+      return res.status(400).json({
+        message: `Página inválida. O número máximo de páginas é ${totalPages}.`,
+      });
+    }
 
     // Calcula o offset (pula registros) e o limite (quantidade máxima de registros) a serem usados na consulta
     const offset = (page - 1) * pageSize;
     const limit = pageSize;
 
+    // Utilize a função findAndCountAll para buscar registros paginados
     const { count, rows } = await GeralModel.findAndCountAll({
-      attributes: {
-        exclude: ["id"],
-      },
+      attributes: ["PRODUTO", "LABORATORIO"], // Inclua apenas os campos necessários
       where: {
         CEP_INICIAL: {
           [Op.gte]: cepAsInteger,
@@ -59,7 +75,7 @@ router.get("/cep/:user_cep", async (req, res) => {
 
     res.status(200).json({
       total: count, // Total de registros encontrados
-      totalPages: Math.ceil(count / pageSize), // Total de páginas
+      totalPages, // Total de páginas
       currentPage: page, // Página atual
       pageSize: limit, // Tamanho da página (quantidade de registros por página)
       data: rows, // Registros da página atual

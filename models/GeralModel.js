@@ -12,6 +12,11 @@ Geral.init(
     SETOR_NEC_ABERTO: {
       type: DataTypes.STRING(200),
       field: "SETOR_NEC_ABERTO",
+      indexes: [
+        {
+          fields: ["SETOR_NEC_ABERTO"],
+        },
+      ],
     },
     EAN: {
       type: DataTypes.STRING(15),
@@ -20,10 +25,20 @@ Geral.init(
     CEP_INICIAL: {
       type: DataTypes.INTEGER,
       field: "CEP_INICIAL",
+      indexes: [
+        {
+          fields: ["CEP_INICIAL"],
+        },
+      ],
     },
     CEP_FINAL: {
       type: DataTypes.INTEGER,
       field: "CEP_FINAL",
+      indexes: [
+        {
+          fields: ["CEP_FINAL"],
+        },
+      ],
     },
     PRODUTO: {
       type: DataTypes.STRING(66),

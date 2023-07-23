@@ -2,7 +2,6 @@ const express = require("express");
 const Top10Model = require("../models/Top10Model");
 const { Op } = require("sequelize");
 const router = express();
-const xlsx = require("xlsx");
 
 //Busca todos os registros
 router.get("/", async (req, res) => {
