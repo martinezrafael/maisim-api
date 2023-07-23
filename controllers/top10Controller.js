@@ -85,7 +85,6 @@ router.get("/cep/:user_cep", async (req, res) => {
     console.log(user_cep);
 
     const cepAsInteger = parseInt(user_cep, 10);
-    console.log("chega aqui");
     console.log(cepAsInteger);
 
     if (isNaN(cepAsInteger)) {

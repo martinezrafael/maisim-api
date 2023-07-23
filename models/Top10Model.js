@@ -5,43 +5,43 @@ class Top10 extends Model {}
 
 Top10.init(
   {
-    brick: {
+    BRICK: {
       type: DataTypes.INTEGER,
       field: "BRICK",
     },
-    setorNecAberto: {
+    SETOR_NEC_ABERTO: {
       type: DataTypes.STRING(200),
       field: "SETOR_NEC_ABERTO",
     },
-    ean: {
+    EAN: {
       type: DataTypes.STRING(15),
       field: "EAN",
     },
-    cepInicial: {
+    CEP_INICIAL: {
       type: DataTypes.INTEGER,
       field: "CEP_INICIAL",
     },
-    cepFinal: {
+    CEP_FINAL: {
       type: DataTypes.INTEGER,
       field: "CEP_FINAL",
     },
-    produto: {
+    PRODUTO: {
       type: DataTypes.STRING(66),
       field: "PRODUTO",
     },
-    laboratorio: {
+    LABORATORIO: {
       type: DataTypes.STRING(50),
       field: "LABORATORIO",
     },
-    unidades: {
+    UNIDADES: {
       type: DataTypes.FLOAT,
       field: "UNIDADES",
     },
-    fcc: {
+    FCC: {
       type: DataTypes.INTEGER,
       field: "FCC",
     },
-    rank: {
+    RANK: {
       type: DataTypes.INTEGER,
       field: "RANK",
     },
