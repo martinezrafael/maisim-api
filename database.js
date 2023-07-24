@@ -6,7 +6,6 @@ const dbUser = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 const dbHost = process.env.DB_HOST;
 
-// Verifica se todas as variáveis de ambiente foram definidas corretamente
 if (!dbName || !dbUser || !password || !dbHost) {
   console.error("Erro de configuração: Verifique as variáveis de ambiente.");
   process.exit(1);

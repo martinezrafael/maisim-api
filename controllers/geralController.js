@@ -53,10 +53,6 @@ router.get("/cep/:user_cep", async (req, res) => {
       });
     }
 
-    // Calcula o offset (pula registros) e o limite (quantidade máxima de registros) a serem usados na consulta
-    const offset = (page - 1) * pageSize;
-    const limit = pageSize;
-
     // Utilize a função findAndCountAll para buscar registros paginados
     const { count, rows } = await GeralModel.findAndCountAll({
       attributes: ["PRODUTO", "LABORATORIO"], // Inclua apenas os campos necessários
@@ -69,8 +65,8 @@ router.get("/cep/:user_cep", async (req, res) => {
         },
       },
       order: [["SETOR_NEC_ABERTO", "ASC"]],
-      offset,
-      limit,
+      offset: (page - 1) * pageSize,
+      limit: pageSize,
     });
 
     res.status(200).json({

@@ -1,7 +1,6 @@
 const express = require("express");
 require("dotenv").config();
-const top10Controller = require("./controllers/top10Controller");
-const geralController = require("./controllers/geralController");
+const { top10Controller, geralController } = require("./controllers");
 
 const app = express();
 

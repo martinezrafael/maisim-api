@@ -5,61 +5,25 @@ class Geral extends Model {}
 
 Geral.init(
   {
-    BRICK: {
-      type: DataTypes.INTEGER,
-      field: "BRICK",
-    },
+    BRICK: DataTypes.INTEGER,
     SETOR_NEC_ABERTO: {
       type: DataTypes.STRING(200),
-      field: "SETOR_NEC_ABERTO",
-      indexes: [
-        {
-          fields: ["SETOR_NEC_ABERTO"],
-        },
-      ],
+      indexes: [{ fields: ["SETOR_NEC_ABERTO"] }],
     },
-    EAN: {
-      type: DataTypes.STRING(15),
-      field: "EAN",
-    },
+    EAN: DataTypes.STRING(15),
     CEP_INICIAL: {
       type: DataTypes.INTEGER,
-      field: "CEP_INICIAL",
-      indexes: [
-        {
-          fields: ["CEP_INICIAL"],
-        },
-      ],
+      indexes: [{ fields: ["CEP_INICIAL"] }],
     },
     CEP_FINAL: {
       type: DataTypes.INTEGER,
-      field: "CEP_FINAL",
-      indexes: [
-        {
-          fields: ["CEP_FINAL"],
-        },
-      ],
+      indexes: [{ fields: ["CEP_FINAL"] }],
     },
-    PRODUTO: {
-      type: DataTypes.STRING(66),
-      field: "PRODUTO",
-    },
-    LABORATORIO: {
-      type: DataTypes.STRING(50),
-      field: "LABORATORIO",
-    },
-    UNIDADES: {
-      type: DataTypes.FLOAT,
-      field: "UNIDADES",
-    },
-    FCC: {
-      type: DataTypes.INTEGER,
-      field: "FCC",
-    },
-    RANK: {
-      type: DataTypes.INTEGER,
-      field: "RANK",
-    },
+    PRODUTO: DataTypes.STRING(66),
+    LABORATORIO: DataTypes.STRING(50),
+    UNIDADES: DataTypes.FLOAT,
+    FCC: DataTypes.INTEGER,
+    RANK: DataTypes.INTEGER,
   },
   {
     sequelize,
