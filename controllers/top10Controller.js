@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
         "UNIDADES",
         "FCC",
         "RANK",
+        "REPRESENTACAO",
       ],
     });
     res.status(200).json(top);
@@ -42,6 +43,7 @@ router.get("/:brick", async (req, res) => {
         "UNIDADES",
         "FCC",
         "RANK",
+        "REPRESENTACAO",
       ],
       where: {
         BRICK: brick,
@@ -80,6 +82,7 @@ router.get("/cep/:user_cep", async (req, res) => {
         "UNIDADES",
         "FCC",
         "RANK",
+        "REPRESENTACAO",
       ],
       where: {
         CEP_INICIAL: {
