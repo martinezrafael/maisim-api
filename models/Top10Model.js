@@ -15,6 +15,7 @@ Top10.init(
     UNIDADES: DataTypes.FLOAT,
     FCC: DataTypes.INTEGER,
     RANK: DataTypes.INTEGER,
+    REPRESENTACAO: DataTypes.FLOAT,
   },
   {
     sequelize,
